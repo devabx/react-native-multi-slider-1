@@ -354,32 +354,26 @@ export default class MultiSlider extends React.Component {
       <View style={[styles.container, this.props.containerStyle]}>
         <View style={[styles.fullTrack, { width: sliderLength }]}>
           <View
-            style={[
-              {
-                position: "absolute",
-                flexDirection: "row",
-                width: DEFAULT_SLIDER_LENGTH,
-                bottom: 10
-              }
-            ]}
+            style={styles.sliderContainer}
             renderToHardwareTextureAndroid={true}
           >
             {this.props.optionsArray &&
-              this.props.optionsArray.map((item: PickerItem) => {
+              this.props.optionsArray.map((item: PickerItem, key) => {
                 return (
                   <View
                     key={item.label}
                     style={{
                       width: DEFAULT_SLIDER_LENGTH / optionArrayLength,
-                      textAlign: "left",
-                      alignItems: "flex-start"
+                      alignItems: "flex-start",
+                      overflow: "visible",
+                      ...(optionArrayLength === key
+                        ? {
+                            marginLeft: -10
+                          }
+                        : {})
                     }}
                   >
-                    <Text
-                      style={{
-                        marginLeft: -5
-                      }}
-                    >
+                    <Text>
                       {item.label}
                     </Text>
                   </View>
@@ -503,6 +497,12 @@ const styles = StyleSheet.create({
   },
   topMarkerContainer: {
     zIndex: 1
+  },
+  sliderContainer: {
+    position: "absolute",
+    flexDirection: "row",
+    width: DEFAULT_SLIDER_LENGTH + 20,
+    bottom: 10
   },
   touch: {
     backgroundColor: "transparent",
