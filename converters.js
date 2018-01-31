@@ -1,5 +1,15 @@
 // Find closest index for a given value
-const closest = (array, n) => array.findIndex((elem) => (n <= elem));
+import { Dimensions } from "react-native";
+
+export const DEFAULT_SLIDER_LENGTH = Dimensions.get("window").width - 80;
+
+const closest = (array, n) => {
+  return array.findIndex(elem => {
+    const itemValue = n.value || n;
+    const currentValue = elem.value || elem;
+    return itemValue <= currentValue;
+  });
+};
 
 export function valueToPosition(value, valuesArray, sliderLength) {
   const index = closest(valuesArray, value);
