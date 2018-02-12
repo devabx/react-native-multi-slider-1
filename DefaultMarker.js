@@ -9,6 +9,11 @@ import {
   Text
 } from "react-native";
 
+const getLabelofCurrentValue = (item, val) => {
+  const values = item.filter(a => a.value === val)[0];
+  return values ? values.label : "";
+};
+
 export default class DefaultMarker extends React.Component {
   static propTypes = {
     pressed: PropTypes.bool,
@@ -20,8 +25,13 @@ export default class DefaultMarker extends React.Component {
   };
 
   render() {
-    const { pressed, currentValue } = this.props;
-    const markerLabel = currentValue.label || currentValue;
+    const { pressed, currentValue, optionsArray } = this.props;
+    const currentValueLabel =
+      getLabelofCurrentValue(optionsArray, currentValue.value) ||
+      currentValue.label;
+
+    const markerLabel = currentValueLabel || currentValue.label;
+
     return (
       <TouchableHighlight>
         <View
