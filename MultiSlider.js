@@ -19,45 +19,16 @@ import {
 } from "./converters";
 
 export default class MultiSlider extends React.Component {
-  static defaultProps = {
-    values: [0],
-    onValuesChangeStart: () => {},
-    onValuesChange: values => {},
-    onValuesChangeFinish: values => {},
-    step: 1,
-    min: 0,
-    max: 10,
-    touchDimensions: {
-      height: 50,
-      width: 50,
-      borderRadius: 15,
-      slipDisplacement: 200
-    },
-    customMarker: DefaultMarker,
-    markerOffsetX: 0,
-    markerOffsetY: 0,
-    sliderLength: DEFAULT_SLIDER_LENGTH,
-    onToggleOne: undefined,
-    onToggleTwo: undefined,
-    enabledOne: true,
-    enabledTwo: true,
-    allowOverlap: false,
-    snapped: false
-  };
+        super(props)
 
-  constructor(props) {
-    super(props);
+        this.optionsArray = this.props.optionsArray || createArray(this.props.min, this.props.max, this.props.step)
+        this.stepLength = this.props.sliderLength / this.optionsArray.length
 
-    this.optionsArray =
-      this.props.optionsArray ||
-      createArray(this.props.min, this.props.max, this.props.step);
-    this.stepLength = this.props.sliderLength / this.optionsArray.length;
+        const initialValues = this.props.values.map(value =>
+            valueToPosition(value, this.optionsArray, this.props.sliderLength)
+        )
 
-    let initialValues = this.props.values.map(value =>
-      valueToPosition(value, this.optionsArray, this.props.sliderLength)
-    );
-
-    const valueOne =
+        const valueOne =
             this.props.values[0].label === 'undefined'
                 ? {
                       label: '0',
@@ -65,15 +36,23 @@ export default class MultiSlider extends React.Component {
                   }
                 : this.props.values[0]
 
-    this.state = {
-      pressedOne: true,
-      valueOne,
-      valueTwo: this.props.values[1],
-      pastOne: initialValues[0],
-      pastTwo: initialValues[1],
-      positionOne: initialValues[0],
-      positionTwo: initialValues[1]
-    };
+        const valueTwo =
+            this.props.values[1].label === 'undefined'
+                ? {
+                      label: '5+',
+                      value: 5
+                  }
+                : this.props.values[1]
+
+        this.state = {
+            pressedOne: true,
+            valueOne,
+            valueTwo,
+            pastOne: initialValues[0],
+            pastTwo: initialValues[1],
+            positionOne: initialValues[0],
+            positionTwo: initialValues[1]
+        }
   }
 
   componentWillMount() {
