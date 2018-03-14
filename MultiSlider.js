@@ -19,40 +19,69 @@ import {
 } from "./converters";
 
 export default class MultiSlider extends React.Component {
-        super(props)
+  static defaultProps = {
+    values: [0],
+    onValuesChangeStart: () => {},
+    onValuesChange: values => {},
+    onValuesChangeFinish: values => {},
+    step: 1,
+    min: 0,
+    max: 10,
+    touchDimensions: {
+      height: 50,
+      width: 50,
+      borderRadius: 15,
+      slipDisplacement: 200
+    },
+    customMarker: DefaultMarker,
+    markerOffsetX: 0,
+    markerOffsetY: 0,
+    sliderLength: DEFAULT_SLIDER_LENGTH,
+    onToggleOne: undefined,
+    onToggleTwo: undefined,
+    enabledOne: true,
+    enabledTwo: true,
+    allowOverlap: false,
+    snapped: false
+  };
 
-        this.optionsArray = this.props.optionsArray || createArray(this.props.min, this.props.max, this.props.step)
-        this.stepLength = this.props.sliderLength / this.optionsArray.length
+  constructor(props) {
+    super(props);
 
-        const initialValues = this.props.values.map(value =>
-            valueToPosition(value, this.optionsArray, this.props.sliderLength)
-        )
+    this.optionsArray =
+      this.props.optionsArray ||
+      createArray(this.props.min, this.props.max, this.props.step);
+    this.stepLength = this.props.sliderLength / this.optionsArray.length;
 
-        const valueOne =
-            this.props.values[0].label === 'undefined'
-                ? {
-                      label: '0',
-                      value: 0
-                  }
-                : this.props.values[0]
+    const initialValues = this.props.values.map(value =>
+      valueToPosition(value, this.optionsArray, this.props.sliderLength)
+    );
 
-        const valueTwo =
-            this.props.values[1].label === 'undefined'
-                ? {
-                      label: '5+',
-                      value: 5
-                  }
-                : this.props.values[1]
+    const valueOne =
+      this.props.values[0].label === "undefined"
+        ? {
+            label: "0",
+            value: 0
+          }
+        : this.props.values[0];
 
-        this.state = {
-            pressedOne: true,
-            valueOne,
-            valueTwo,
-            pastOne: initialValues[0],
-            pastTwo: initialValues[1],
-            positionOne: initialValues[0],
-            positionTwo: initialValues[1]
-        }
+    const valueTwo =
+      this.props.values[1].label === "undefined"
+        ? {
+            label: "5+",
+            value: 5
+          }
+        : this.props.values[1];
+
+    this.state = {
+      pressedOne: true,
+      valueOne,
+      valueTwo,
+      pastOne: initialValues[0],
+      pastTwo: initialValues[1],
+      positionOne: initialValues[0],
+      positionTwo: initialValues[1]
+    };
   }
 
   componentWillMount() {
