@@ -57,9 +57,17 @@ export default class MultiSlider extends React.Component {
       valueToPosition(value, this.optionsArray, this.props.sliderLength)
     );
 
+    const valueOne =
+            this.props.values[0].label === 'undefined'
+                ? {
+                      label: '0',
+                      value: 0
+                  }
+                : this.props.values[0]
+
     this.state = {
       pressedOne: true,
-      valueOne: this.props.values[0],
+      valueOne,
       valueTwo: this.props.values[1],
       pastOne: initialValues[0],
       pastTwo: initialValues[1],
